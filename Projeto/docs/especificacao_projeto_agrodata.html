@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Especificação do Projeto AgroData — Ciência de Dados</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #059669; --primary-dark: #047857; --accent: #10b981;
+      --bg: #0f172a; --card-bg: #1e293b; --card-border: #334155;
+      --text: #f8fafc; --text-muted: #94a3b8; --code-bg: #090d16;
+      --gold: #f59e0b; --red: #ef4444; --blue: #3b82f6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 80px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    header { background: linear-gradient(180deg, rgba(5, 150, 105, 0.15) 0%, rgba(15, 23, 42, 0) 100%); border-bottom: 1px solid var(--card-border); padding: 50px 0 30px 0; margin-bottom: 30px; }
+    .badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 14px; }
+    h1 { font-size: 2.3rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; background: linear-gradient(135deg, #ffffff 0%, #a7f3d0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { font-size: 1.1rem; color: var(--text-muted); max-width: 800px; margin-bottom: 20px; }
+    .meta-bar { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.88rem; color: #cbd5e1; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .meta-item strong { color: #34d399; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 30px; }
+    .kpi-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px; position: relative; overflow: hidden; }
+    .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent); }
+    .kpi-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+    .kpi-value { font-size: 1.8rem; font-weight: 800; color: #ffffff; }
+    .kpi-desc { font-size: 0.82rem; color: #34d399; }
+    .section-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 26px; margin-bottom: 26px; }
+    .section-title { font-size: 1.35rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; color: #ffffff; }
+    .pillar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 16px; }
+    .pillar-box { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--card-border); border-radius: 12px; padding: 18px; }
+    .pillar-box h4 { font-size: 1.05rem; color: #38bdf8; margin-bottom: 6px; }
+    .pillar-box p { font-size: 0.9rem; color: #cbd5e1; }
+    .sim-panel { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 24px; margin-top: 16px; }
+    .sim-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: #94a3b8; margin-bottom: 4px; }
+    .form-control { width: 100%; background: #090d16; border: 1px solid #334155; padding: 8px 12px; border-radius: 8px; color: #ffffff; font-size: 0.9rem; font-family: inherit; }
+    .sim-result { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 16px; text-align: center; }
+    .sim-result h3 { font-size: 0.88rem; text-transform: uppercase; color: #34d399; margin-bottom: 6px; }
+    .sim-res-val { font-size: 2.2rem; font-weight: 800; color: #ffffff; }
+    .sim-res-sacas { font-size: 1.1rem; color: #a7f3d0; font-weight: 600; }
+    .team-badge { display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 8px; margin: 4px; font-size: 0.85rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 14px; }
+    th { background: #0f172a; color: #94a3b8; padding: 10px 14px; text-align: left; }
+    td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); color: #e2e8f0; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="badge-pill">🌱 Projeto Integrador — Ciência de Dados (2º Bimestre)</div>
+      <h1>AgroData — Grupo 10</h1>
+      <p class="subtitle">Sistema Agrometeorológico Preditivo e Zonificação Agroecológica com Machine Learning</p>
+      <div class="meta-bar">
+        <div class="meta-item"><strong>Equipe:</strong> Grupo 10</div>
+        <div class="meta-item"><strong>Professor:</strong> Dr. Rafael Duarte</div>
+        <div class="meta-item"><strong>Status:</strong> Gatekeeper & Checkpoint 1 Prontos</div>
+        <div class="meta-item"><strong>Multiplicador:</strong> 1.0x (Público INMET / PAM)</div>
+      </div>
+      <div style="margin-top: 14px;">
+        <span class="team-badge">Carlos Eduardo Sielski Urbim (33755973)</span>
+        <span class="team-badge">Fernando de Araujo Pereira (34210245)</span>
+        <span class="team-badge">Lucas Antonio Domingues de Souza Oliveira (33476055)</span>
+        <span class="team-badge">Eduardo Bryan Braga Rocha (34731067)</span>
+        <span class="team-badge">Otavio Caetano Ribeiro (32736274)</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Acurácia Preditiva (R²)</div>
+        <div class="kpi-value">67,8%</div>
+        <div class="kpi-desc">↑ +33,0 p.p. vs. Regressão Simples</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Erro Médio (MAE)</div>
+        <div class="kpi-value">5,3 sc/ha</div>
+        <div class="kpi-desc">↓ Queda de 34,0% no erro de safra</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Zonas Mapeadas (K-Means)</div>
+        <div class="kpi-value">3 Zonas</div>
+        <div class="kpi-desc">✓ Cotovelo e Silhueta validados</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Amostras de Campo</div>
+        <div class="kpi-value">298 Talhões</div>
+        <div class="kpi-desc">★ Base limpa e saneada</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">⚡ Simulador de Produtividade ao Vivo</div>
+      <div class="sim-panel">
+        <div class="sim-grid">
+          <div class="form-group">
+            <label>Precipitação no Ciclo (mm):</label>
+            <input type="number" id="simChuva" class="form-control" value="950" step="50" oninput="simularSafra()">
+          </div>
+          <div class="form-group">
+            <label>Temperatura Média (°C):</label>
+            <input type="number" id="simTemp" class="form-control" value="25.0" step="0.5" oninput="simularSafra()">
+          </div>
+          <div class="form-group">
+            <label>Fertilizante NPK (kg/ha):</label>
+            <input type="number" id="simAdubo" class="form-control" value="300" step="20" oninput="simularSafra()">
+          </div>
+          <div class="form-group">
+            <label>Textura do Solo:</label>
+            <select id="simSolo" class="form-control" onchange="simularSafra()">
+              <option value="350.3">Argiloso (+350 kg/ha)</option>
+              <option value="235.1">Misto (+235 kg/ha)</option>
+              <option value="0.0">Arenoso (Base 0)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Manejo de Irrigação:</label>
+            <select id="simIrrig" class="form-control" onchange="simularSafra()">
+              <option value="-45.4">Pivô Central</option>
+              <option value="0.0">Gotejamento</option>
+              <option value="-473.8">Sequeiro (-474 kg/ha)</option>
+            </select>
+          </div>
+        </div>
+        <div class="sim-result">
+          <h3>Produtividade Prevista:</h3>
+          <div class="sim-res-val" id="resKg">4.247 kg/ha</div>
+          <div class="sim-res-sacas" id="resSacas">70,8 sacas de 60 kg por hectare</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function simularSafra() {
+      const chuva = parseFloat(document.getElementById('simChuva').value) || 0;
+      const temp = parseFloat(document.getElementById('simTemp').value) || 0;
+      const adubo = parseFloat(document.getElementById('simAdubo').value) || 0;
+      const bonusSolo = parseFloat(document.getElementById('simSolo').value) || 0;
+      const bonusIrrig = parseFloat(document.getElementById('simIrrig').value) || 0;
+      const b0 = 2923.91, bChuva = 1.13, bTemp = -46.92, bAdubo = 3.60;
+      let prod = b0 + (bChuva * chuva) + (bTemp * (temp - 25.0)) + (bAdubo * (adubo - 260.0)) + bonusSolo + bonusIrrig;
+      if (prod < 1000) prod = 1000;
+      document.getElementById('resKg').innerText = Math.round(prod).toLocaleString('pt-BR') + ' kg/ha';
+      document.getElementById('resSacas').innerText = (prod / 60.0).toFixed(1).replace('.', ',') + ' sacas de 60 kg/ha';
+    }
+    simularSafra();
+  </script>
+</body>
+</html>
